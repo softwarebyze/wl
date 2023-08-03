@@ -23,7 +23,7 @@ export default function TabLayout() {
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
       }}>
       <Tabs.Screen
-        name="add"
+        name="index"
         options={{
           title: 'Add Score',
           tabBarIcon: ({ color }) => <TabBarIcon name="plus" color={color} />,
