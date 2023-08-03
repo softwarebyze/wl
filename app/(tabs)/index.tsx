@@ -9,14 +9,17 @@ export default function AddScoreScreen() {
   const [date, setDate] = useState(new Date())
   const [myScore, setMyScore] = useState('')
   const [opponentScore, setOpponentScore] = useState('')
+
   const save = () => {
     console.log(`${date} myscore: ${myScore} opponentscore: ${opponentScore}`)
     setMyScore('')
     setOpponentScore('')
   }
+
   return (
     <View onPointerDown={Keyboard.dismiss} onTouchStart={Keyboard.dismiss} style={styles.container}>
       <Text style={styles.title}>Add Score</Text>
+      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <View style={styles.dateContainer}>
         <Text style={styles.dateLabel}>Date</Text>
         <CustomDateTimePicker value={date} onChange={setDate} />
@@ -44,6 +47,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  separator: {
+    marginTop: 30,
+    height: 1,
+    width: '80%',
   },
   title: {
     fontSize: 20,
