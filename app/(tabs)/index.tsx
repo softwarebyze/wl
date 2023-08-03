@@ -7,6 +7,13 @@ import CustomDateTimePicker from '@/components/CustomDateTimePicker';
 
 export default function AddScoreScreen() {
   const [date, setDate] = useState(new Date())
+  const [myScore, setMyScore] = useState('')
+  const [opponentScore, setOpponentScore] = useState('')
+  const save = () => {
+    console.log(`${date} myscore: ${myScore} opponentscore: ${opponentScore}`)
+    setMyScore('')
+    setOpponentScore('')
+  }
   return (
     <View onPointerDown={Keyboard.dismiss} onTouchStart={Keyboard.dismiss} style={styles.container}>
       <Text style={styles.title}>Add Score</Text>
@@ -17,16 +24,16 @@ export default function AddScoreScreen() {
       <View style={styles.scoresContainer}>
         <View style={styles.score}>
           <Text>Me</Text>
-          <TextInput inputMode="numeric" style={styles.scoreInput} />
+          <TextInput onChangeText={setMyScore} value={myScore} inputMode="numeric" style={styles.scoreInput} />
         </View>
         <Text style={styles.dash}>-</Text>
         <View style={styles.score}>
           <Text>Opponent</Text>
-          <TextInput inputMode="numeric" style={styles.scoreInput} />
+          <TextInput onChangeText={setOpponentScore} value={opponentScore} inputMode="numeric" style={styles.scoreInput} />
         </View>
       </View>
       <View style={styles.buttonContainer}>
-        <Button title="Save" />
+        <Button onPress={save} title="Save" />
       </View>
     </View>
   );
