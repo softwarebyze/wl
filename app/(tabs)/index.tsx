@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { StyleSheet, Keyboard } from 'react-native';
 
-import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text, View, TextInput } from '@/components/Themed';
 import CustomDateTimePicker from '@/components/CustomDateTimePicker';
 
@@ -20,6 +19,7 @@ export default function AddScoreScreen() {
           <Text>Me</Text>
           <TextInput inputMode="numeric" style={styles.scoreInput} />
         </View>
+        <Text style={styles.dash}>-</Text>
         <View style={styles.score}>
           <Text>Opponent</Text>
           <TextInput inputMode="numeric" style={styles.scoreInput} />
@@ -51,12 +51,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 12,
     marginHorizontal: 8,
-    marginVertical: 8
+    marginVertical: 8,
+    textAlign: 'center'
   },
   score: {
     alignItems: 'center'
   },
   scoresContainer: {
     flexDirection: 'row',
+    alignItems: 'center'
+  },
+  dash: {
+    fontSize: 28,
+    paddingTop: 10
   }
 });
