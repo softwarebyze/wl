@@ -25,7 +25,9 @@ export default function AddScoreScreen() {
           <TextInput inputMode="numeric" style={styles.scoreInput} />
         </View>
       </View>
-      <Button title="Save"/>
+      <View style={styles.buttonContainer}>
+        <Button title="Save" />
+      </View>
     </View>
   );
 }
@@ -66,5 +68,8 @@ const styles = StyleSheet.create({
   dash: {
     fontSize: 28,
     paddingTop: 10
+  },
+  buttonContainer: {
+    margin: 20
   }
 });
