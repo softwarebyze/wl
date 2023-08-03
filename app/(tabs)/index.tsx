@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { StyleSheet, Keyboard } from 'react-native';
 
-import { Text, View, TextInput } from '@/components/Themed';
+import { Text, View, TextInput, Button } from '@/components/Themed';
 import CustomDateTimePicker from '@/components/CustomDateTimePicker';
 
 
@@ -25,6 +25,7 @@ export default function AddScoreScreen() {
           <TextInput inputMode="numeric" style={styles.scoreInput} />
         </View>
       </View>
+      <Button title="Save"/>
     </View>
   );
 }
