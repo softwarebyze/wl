@@ -48,11 +48,12 @@ const styles = StyleSheet.create({
   scoreInput: {
     width: 50,
     height: 40,
-    borderWidth: 1,
+    borderWidth: 2,
     padding: 12,
     marginHorizontal: 8,
     marginVertical: 8,
-    textAlign: 'center'
+    textAlign: 'center',
+    borderRadius: 5,
   },
   score: {
     alignItems: 'center'
