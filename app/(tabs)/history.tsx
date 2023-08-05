@@ -20,31 +20,34 @@ export default function HistoryScreen() {
           <Text>90%</Text>
         </View>
       </View>
+
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
-      <View style={styles.scoreRow}>
-        <Text style={styles.scoreRowDate}>
-          8/7/22
-        </Text>
-        <Text>
-          7 - 11
-        </Text>
-      </View>
-      <View style={styles.scoreRow}>
-        <Text style={styles.scoreRowDate}>
-          5/16/22
-        </Text>
-        <Text>
-          1 - 11
-        </Text>
-      </View>
-      <View style={styles.scoreRow}>
-        <Text style={styles.scoreRowDate}>
-          3/6/22
-        </Text>
-        <Text>
-          11 - 3
-        </Text>
+      <View style={styles.scores}>
+        <View style={styles.scoreRow}>
+          <Text>
+            8/7/22
+          </Text>
+          <Text>
+            7 - 11
+          </Text>
+        </View>
+        <View style={styles.scoreRow}>
+          <Text>
+            5/16/22
+          </Text>
+          <Text>
+            1 - 11
+          </Text>
+        </View>
+        <View style={styles.scoreRow}>
+          <Text>
+            3/6/22
+          </Text>
+          <Text>
+            11 - 3
+          </Text>
+        </View>
       </View>
     </View>
   );
@@ -78,13 +81,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center'
   },
+  scores: {
+    minWidth: 200,
+  },
   scoreRow: {
     flexDirection: 'row',
+    justifyContent: 'space-evenly',
     padding: 16,
-    borderWidth: 1
+    borderBottomWidth: 1
   },
-  scoreRowDate: {
-    marginEnd: 60,
-
-  }
 });
