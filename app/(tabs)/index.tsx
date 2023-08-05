@@ -4,14 +4,17 @@ import { StyleSheet, Keyboard } from 'react-native';
 import { Text, View, TextInput, Button } from '@/components/Themed';
 import CustomDateTimePicker from '@/components/CustomDateTimePicker';
 import { Score } from "@/types";
-import { getScores, saveScores } from "@/helpers/scores";
+import { useScores } from "./_layout";
 
 
 export default function AddScoreScreen() {
   const [date, setDate] = useState(new Date())
   const [myScore, setMyScore] = useState('')
   const [opponentScore, setOpponentScore] = useState('')
-  const disabled = myScore === '' || opponentScore === ''
+  const [loading, setLoading] = useState(false)
+  const disabled = myScore === '' || opponentScore === '' || loading
+
+  const { scores, saveScores } = useScores()
 
   const formatDate = (date: Date) => date.toLocaleDateString('en-US', {
     month: '2-digit',
@@ -20,13 +23,14 @@ export default function AddScoreScreen() {
   });
 
   const save = async () => {
-    const scores = await getScores() ?? []
+    setLoading(true)
     const previousScoreId = scores.at(-1)?.id ?? 0
     const id = previousScoreId + 1
     const newScore: Score = { id, date: formatDate(date), myScore: +myScore, opponentScore: +opponentScore }
     saveScores([...scores, newScore])
     setMyScore('')
     setOpponentScore('')
+    setLoading(false)
   }
 
   return (

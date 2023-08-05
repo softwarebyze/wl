@@ -1,16 +1,17 @@
 import { StyleSheet } from 'react-native';
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 
 import { Text, View } from '@/components/Themed';
 import { Score } from '@/types';
-import { deleteScore, getScores } from '@/helpers/scores';
 import { Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { useScores } from './_layout';
 
 
 export default function HistoryScreen() {
-  const [scores, setScores] = useState<Score[]>([])
   const [loading, setLoading] = useState(false)
+  const { scores, deleteScore } = useScores()
+
 
   const { wins, losses } = scores.reduce(
     (totals, score) => {
@@ -24,15 +25,6 @@ export default function HistoryScreen() {
     { wins: 0, losses: 0 }
   );
 
-  useEffect(() => {
-    const getSavedScores = async () => {
-      const scores = await getScores()
-      setScores(scores ?? [])
-    }
-    setLoading(true)
-    getSavedScores().then(() => setLoading(false))
-  }, [])
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>History</Text>
@@ -43,7 +35,7 @@ export default function HistoryScreen() {
 
         <View style={styles.scores}>
           {scores.map(score =>
-            <ScoreRow {...score} key={score.id} />
+            <ScoreRow {...score} key={score.id} onDelete={deleteScore} />
           )}
         </View>
       </View> : <NoScores />}
@@ -73,7 +65,7 @@ const TotalRow = ({ wins, losses, total }: { wins: number, losses: number, total
   }
 }
 
-const ScoreRow = ({ id, date, myScore, opponentScore }: Score) => (
+const ScoreRow = ({ id, date, myScore, opponentScore, onDelete }: Score & { onDelete: (id: number) => void }) => (
   <View style={styles.scoreRow}>
     <Text>
       {date}
@@ -81,7 +73,7 @@ const ScoreRow = ({ id, date, myScore, opponentScore }: Score) => (
     <Text>
       {myScore} - {opponentScore}
     </Text>
-    <Ionicons onPress={() => deleteScore(id)} name="md-trash-outline" size={16} color="black" />
+    <Ionicons onPress={() => onDelete(id)} name="md-trash-outline" size={16} color="black" />
   </View>
 )
 
