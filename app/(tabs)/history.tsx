@@ -11,6 +11,18 @@ export default function HistoryScreen() {
   const [scores, setScores] = useState<Score[]>([])
   const [loading, setLoading] = useState(false)
 
+  const { wins, losses } = scores.reduce(
+    (totals, score) => {
+      if (score.myScore > score.opponentScore) {
+        totals.wins += 1;
+      } else if (score.myScore < score.opponentScore) {
+        totals.losses += 1;
+      }
+      return totals;
+    },
+    { wins: 0, losses: 0 }
+  );
+
   useEffect(() => {
     const getSavedScores = async () => {
       const scores = await getScores()
@@ -24,7 +36,7 @@ export default function HistoryScreen() {
     <View style={styles.container}>
       <Text style={styles.title}>History</Text>
       {scores.length && !loading ? <View>
-        <TotalRow />
+        <TotalRow wins={wins} losses={losses} total={scores.length} />
 
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
@@ -39,20 +51,27 @@ export default function HistoryScreen() {
   );
 }
 
-const TotalRow = () => <View style={styles.totalRow}>
-  <Text style={styles.totalText}>Total</Text>
-  <View style={styles.totals}>
-    <View style={{ marginHorizontal: 12 }}>
-      <Text>W</Text>
-      <Text>18</Text>
-    </View>
-    <View style={{ marginHorizontal: 12 }}>
-      <Text>L</Text>
-      <Text>2</Text>
-    </View>
-    <Text>90%</Text>
-  </View>
-</View>
+const TotalRow = ({ wins, losses, total }: { wins: number, losses: number, total: number }) => {
+  {
+    const winPercentage = total > 0 ? (wins / total) * 100 : 0;
+    const formattedWinPercentage = winPercentage.toFixed(2) + '%'
+    return (<View style={styles.totalRow}>
+      <Text style={styles.totalText}>Total</Text>
+      <View style={styles.totals}>
+        <View style={styles.total}>
+          <Text>W</Text>
+          <Text>{wins}</Text>
+        </View>
+        <View style={styles.total}>
+          <Text>L</Text>
+          <Text>{losses}</Text>
+        </View>
+        <Text>{formattedWinPercentage}</Text>
+      </View>
+    </View>)
+  }
+}
+
 const ScoreRow = ({ date, myScore, opponentScore }: Score) => (
   <View style={styles.scoreRow}>
     <Text>
@@ -96,6 +115,10 @@ const styles = StyleSheet.create({
   totals: {
     flexDirection: 'row',
     alignItems: 'center'
+  },
+  total: {
+    alignItems: 'center',
+    marginHorizontal: 12
   },
   scores: {
     minWidth: 200,
