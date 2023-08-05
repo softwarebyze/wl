@@ -5,7 +5,7 @@ import { Text, View, TextInput, Button } from '@/components/Themed';
 import CustomDateTimePicker from '@/components/CustomDateTimePicker';
 import { Score } from "@/types";
 import { useScores } from "./_layout";
-
+import Separator from "@/components/Separator";
 
 export default function AddScoreScreen() {
   const [date, setDate] = useState(new Date())
@@ -36,25 +36,27 @@ export default function AddScoreScreen() {
   return (
     <View onPointerDown={Keyboard.dismiss} onTouchStart={Keyboard.dismiss} style={styles.container}>
       <Text style={styles.title}>Add Score</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <View style={styles.dateContainer}>
-        <Text style={styles.dateLabel}>Date</Text>
-        <CustomDateTimePicker value={date} onChange={setDate} />
-      </View>
-      <View style={styles.scoresContainer}>
-        <View style={styles.score}>
-          <Text>Me</Text>
-          <TextInput onChangeText={setMyScore} value={myScore} inputMode="numeric" style={styles.scoreInput} />
+      <Separator />
+      <View>
+        <View style={styles.dateContainer}>
+          <Text style={styles.dateLabel}>Date</Text>
+          <CustomDateTimePicker value={date} onChange={setDate} />
         </View>
-        <Text style={styles.dash}>-</Text>
-        <View style={styles.score}>
-          <Text>Opponent</Text>
-          <TextInput onChangeText={setOpponentScore} value={opponentScore} inputMode="numeric" style={styles.scoreInput} />
+        <View style={styles.scoresContainer}>
+          <View style={styles.score}>
+            <Text>Me</Text>
+            <TextInput onChangeText={setMyScore} value={myScore} inputMode="numeric" style={styles.scoreInput} />
+          </View>
+          <Text style={styles.dash}>-</Text>
+          <View style={styles.score}>
+            <Text>Opponent</Text>
+            <TextInput onChangeText={setOpponentScore} value={opponentScore} inputMode="numeric" style={styles.scoreInput} />
+          </View>
         </View>
-      </View>
-      <View style={styles.buttonContainer}>
-        <Button onPress={save} title="Save" disabled={disabled} />
-      </View>
+        <View style={styles.buttonContainer}>
+          <Button onPress={save} title="Save" disabled={disabled} />
+        </View>
+      </View >
     </View>
   );
 }

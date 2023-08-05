@@ -1,17 +1,15 @@
 import { StyleSheet } from 'react-native';
-import { useState, useEffect, useContext } from 'react'
 
 import { Text, View } from '@/components/Themed';
 import { Score } from '@/types';
 import { Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useScores } from './_layout';
+import Separator from '@/components/Separator';
 
 
 export default function HistoryScreen() {
-  const [loading, setLoading] = useState(false)
   const { scores, deleteScore } = useScores()
-
 
   const { wins, losses } = scores.reduce(
     (totals, score) => {
@@ -28,18 +26,17 @@ export default function HistoryScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>History</Text>
-      {scores.length && !loading ? <View>
-        <TotalRow wins={wins} losses={losses} total={scores.length} />
-
-        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-
-        <View style={styles.scores}>
-          {scores.map(score =>
-            <ScoreRow {...score} key={score.id} onDelete={deleteScore} />
-          )}
-        </View>
-      </View> : <NoScores />}
-      {loading && <Text>Loading scores...</Text>}
+      <Separator />
+      <View style={styles.historyContainer}>
+        {scores.length ? <View>
+          <TotalRow wins={wins} losses={losses} total={scores.length} />
+          <View style={styles.scores}>
+            {scores.map(score =>
+              <ScoreRow {...score} key={score.id} onDelete={deleteScore} />
+            )}
+          </View>
+        </View> : <NoScores />}
+      </View>
     </View>
   );
 }
@@ -49,17 +46,20 @@ const TotalRow = ({ wins, losses, total }: { wins: number, losses: number, total
     const winPercentage = total > 0 ? (wins / total) * 100 : 0;
     const formattedWinPercentage = winPercentage.toFixed(2) + '%'
     return (<View style={styles.totalRow}>
-      <Text style={styles.totalText}>Total</Text>
+      <Text style={styles.totalText}>Totals</Text>
       <View style={styles.totals}>
         <View style={styles.total}>
-          <Text>W</Text>
+          <Text>Wins</Text>
           <Text>{wins}</Text>
         </View>
         <View style={styles.total}>
-          <Text>L</Text>
+          <Text>Losses</Text>
           <Text>{losses}</Text>
         </View>
-        <Text>{formattedWinPercentage}</Text>
+        <View style={styles.total}>
+          <Text>Percent Won</Text>
+          <Text>{formattedWinPercentage}</Text>
+        </View>
       </View>
     </View>)
   }
@@ -88,15 +88,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  historyContainer: {
+    marginVertical: 30
+  },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 30
-  },
-  separator: {
-    marginTop: 30,
-    height: 1,
-    width: '100%',
   },
   totalText: {
     marginEnd: 60
@@ -104,11 +101,14 @@ const styles = StyleSheet.create({
   totalRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    borderBottomWidth: 1,
+    borderStyle: 'dashed',
   },
   totals: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginVertical: 20,
   },
   total: {
     alignItems: 'center',
