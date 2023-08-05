@@ -3,15 +3,28 @@ import { StyleSheet, Keyboard } from 'react-native';
 
 import { Text, View, TextInput, Button } from '@/components/Themed';
 import CustomDateTimePicker from '@/components/CustomDateTimePicker';
+import { Score } from "@/types";
+import { getScores, saveScores } from "@/helpers/scores";
 
 
 export default function AddScoreScreen() {
   const [date, setDate] = useState(new Date())
   const [myScore, setMyScore] = useState('')
   const [opponentScore, setOpponentScore] = useState('')
+  const disabled = myScore === '' || opponentScore === ''
 
-  const save = () => {
-    console.log(`${date} myscore: ${myScore} opponentscore: ${opponentScore}`)
+  const formatDate = (date: Date) => date.toLocaleDateString('en-US', {
+    month: '2-digit',
+    day: '2-digit',
+    year: 'numeric'
+  });
+
+  const save = async () => {
+    const scores = await getScores() ?? []
+    const previousScoreId = scores.at(-1)?.id ?? 0
+    const id = previousScoreId + 1
+    const newScore: Score = { id, date: formatDate(date), myScore: +myScore, opponentScore: +opponentScore }
+    saveScores([...scores, newScore])
     setMyScore('')
     setOpponentScore('')
   }
@@ -36,7 +49,7 @@ export default function AddScoreScreen() {
         </View>
       </View>
       <View style={styles.buttonContainer}>
-        <Button onPress={save} title="Save" />
+        <Button onPress={save} title="Save" disabled={disabled} />
       </View>
     </View>
   );

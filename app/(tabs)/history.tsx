@@ -1,57 +1,73 @@
 import { StyleSheet } from 'react-native';
+import { useState, useEffect } from 'react'
 
 import { Text, View } from '@/components/Themed';
+import { Score } from '@/types';
+import { getScores } from '@/helpers/scores';
+import { Link } from 'expo-router';
+
 
 export default function HistoryScreen() {
+  const [scores, setScores] = useState<Score[]>([])
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const getSavedScores = async () => {
+      const scores = await getScores()
+      setScores(scores ?? [])
+    }
+    setLoading(true)
+    getSavedScores().then(() => setLoading(false))
+  }, [])
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>History</Text>
-      <View style={styles.totalRow}>
-        <Text style={styles.totalText}>Total</Text>
-        <View style={styles.totals}>
-          <View style={{ marginHorizontal: 12 }}>
-            <Text>W</Text>
-            <Text>18</Text>
-          </View>
-          <View style={{ marginHorizontal: 12 }}>
-            <Text>L</Text>
-            <Text>2</Text>
-          </View>
-          <Text>90%</Text>
-        </View>
-      </View>
+      {scores.length && !loading ? <View>
+        <TotalRow />
 
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
-      <View style={styles.scores}>
-        <View style={styles.scoreRow}>
-          <Text>
-            8/7/22
-          </Text>
-          <Text>
-            7 - 11
-          </Text>
+        <View style={styles.scores}>
+          {scores.map(score =>
+            <ScoreRow {...score} key={score.id} />
+          )}
         </View>
-        <View style={styles.scoreRow}>
-          <Text>
-            5/16/22
-          </Text>
-          <Text>
-            1 - 11
-          </Text>
-        </View>
-        <View style={styles.scoreRow}>
-          <Text>
-            3/6/22
-          </Text>
-          <Text>
-            11 - 3
-          </Text>
-        </View>
-      </View>
+      </View> : <NoScores />}
+      {loading && <Text>Loading scores...</Text>}
     </View>
   );
 }
+
+const TotalRow = () => <View style={styles.totalRow}>
+  <Text style={styles.totalText}>Total</Text>
+  <View style={styles.totals}>
+    <View style={{ marginHorizontal: 12 }}>
+      <Text>W</Text>
+      <Text>18</Text>
+    </View>
+    <View style={{ marginHorizontal: 12 }}>
+      <Text>L</Text>
+      <Text>2</Text>
+    </View>
+    <Text>90%</Text>
+  </View>
+</View>
+const ScoreRow = ({ date, myScore, opponentScore }: Score) => (
+  <View style={styles.scoreRow}>
+    <Text>
+      {date}
+    </Text>
+    <Text>
+      {myScore} - {opponentScore}
+    </Text>
+  </View>
+)
+
+const NoScores = () => <View style={styles.noScores}>
+  <Text>No scores saved yet.</Text>
+  <Text><Link style={styles.link} href={'/(tabs)'}>Add Scores</Link> to see your history here </Text>
+</View >
 
 const styles = StyleSheet.create({
   container: {
@@ -67,7 +83,7 @@ const styles = StyleSheet.create({
   separator: {
     marginTop: 30,
     height: 1,
-    width: '80%',
+    width: '100%',
   },
   totalText: {
     marginEnd: 60
@@ -90,4 +106,10 @@ const styles = StyleSheet.create({
     padding: 16,
     borderBottomWidth: 1
   },
+  link: {
+    textDecorationLine: 'underline'
+  },
+  noScores: {
+    alignItems: 'center'
+  }
 });
