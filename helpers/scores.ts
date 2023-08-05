@@ -20,3 +20,20 @@ export const saveScores = async (scores: Score[]) => {
 
     }
 }
+
+
+export const deleteScore = async (id: number) => {
+    try {
+        const scores = await getScores() ?? [];
+        const index = scores.findIndex((score) => score.id === id);
+
+        if (index !== -1) {
+            scores.splice(index, 1);
+            await saveScores(scores);
+        } else {
+            alert('For some reason, I couldn\'t find the score to delete it :( I would suggest to refresh the page and try again')
+        }
+    } catch (e) {
+        alert('Error deleting score :(');
+    }
+}

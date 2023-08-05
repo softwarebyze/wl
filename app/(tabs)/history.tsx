@@ -3,8 +3,9 @@ import { useState, useEffect } from 'react'
 
 import { Text, View } from '@/components/Themed';
 import { Score } from '@/types';
-import { getScores } from '@/helpers/scores';
+import { deleteScore, getScores } from '@/helpers/scores';
 import { Link } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 
 
 export default function HistoryScreen() {
@@ -72,7 +73,7 @@ const TotalRow = ({ wins, losses, total }: { wins: number, losses: number, total
   }
 }
 
-const ScoreRow = ({ date, myScore, opponentScore }: Score) => (
+const ScoreRow = ({ id, date, myScore, opponentScore }: Score) => (
   <View style={styles.scoreRow}>
     <Text>
       {date}
@@ -80,6 +81,7 @@ const ScoreRow = ({ date, myScore, opponentScore }: Score) => (
     <Text>
       {myScore} - {opponentScore}
     </Text>
+    <Ionicons onPress={() => deleteScore(id)} name="md-trash-outline" size={16} color="black" />
   </View>
 )
 
@@ -126,6 +128,7 @@ const styles = StyleSheet.create({
   scoreRow: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
+    alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1
   },
