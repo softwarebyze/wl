@@ -31,8 +31,6 @@ export default function TabLayout() {
   const colorScheme = useColorScheme();
   const [scores, setScores] = useState<Score[]>([])
 
-
-
   const getScores = async () => {
     try {
       const jsonScores = await AsyncStorage.getItem('scores');
