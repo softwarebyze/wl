@@ -1,12 +1,10 @@
-import { StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 
 import { Text, View } from '@/components/Themed';
 import { Score } from '@/types';
 import { Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useScores } from './_layout';
-import Separator from '@/components/Separator';
-
 
 export default function HistoryScreen() {
   const { scores, deleteScore } = useScores()
@@ -25,16 +23,14 @@ export default function HistoryScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>History</Text>
-      <Separator />
       <View style={styles.historyContainer}>
         {scores.length ? <View>
           <TotalRow wins={wins} losses={losses} total={scores.length} />
-          <View style={styles.scores}>
+          <ScrollView style={styles.scores}>
             {scores.map(score =>
               <ScoreRow {...score} key={score.id} onDelete={deleteScore} />
             )}
-          </View>
+          </ScrollView>
         </View> : <NoScores />}
       </View>
     </View>

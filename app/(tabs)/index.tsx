@@ -5,7 +5,6 @@ import { Text, View, TextInput, Button } from '@/components/Themed';
 import CustomDateTimePicker from '@/components/CustomDateTimePicker';
 import { Score } from "@/types";
 import { useScores } from "./_layout";
-import Separator from "@/components/Separator";
 
 export default function AddScoreScreen() {
   const [date, setDate] = useState(new Date())
@@ -36,8 +35,6 @@ export default function AddScoreScreen() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
-        <Text style={styles.title}>Add Score</Text>
-        <Separator />
         <View>
           <View style={styles.dateContainer}>
             <Text style={styles.dateLabel}>Date</Text>
